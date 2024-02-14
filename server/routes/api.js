@@ -10,7 +10,7 @@ const User = require('../models/user')
 const mongoose = require('mongoose');
 
 // MongoDB connection string
-const db = "mongodb+srv://sanidhyajadaun:Sancloud7890@cluster0.nacb8ym.mongodb.net/eventsdb?retryWrites=true&w=majority";
+const db = "MongoUrl";
 
 // Connect to MongoDB
 mongoose.connect(db);
