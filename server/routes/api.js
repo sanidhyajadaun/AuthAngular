@@ -2,36 +2,74 @@
 
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user')
-
-// setting up connection with mongodb
-
-// Import mongoose for MongoDB interaction
+const User = require('../models/user');
+const CashSettlement = require('../models/cash-settlement');
 const mongoose = require('mongoose');
+const cron = require('node-cron');
+const nodemailer = require('nodemailer');
 
-// MongoDB connection string
-const db = "mongodb+srv://sanidhyajadaun:Sancloud7890@cluster0.nacb8ym.mongodb.net/eventsdb?retryWrites=true&w=majority";
+// MongoDB connection strings
+const eventsDbURI = "mongodb+srv://sanidhyajadaun:Sancloud7890@cluster0.nacb8ym.mongodb.net/eventsdb?retryWrites=true&w=majority";
+// const storeDbURI = "mongodb+srv://sanidhyajadaun:Sancloud7890@cluster0.nacb8ym.mongodb.net/StoreDetails?retryWrites=true&w=majority";
 
-// Connect to MongoDB
-mongoose.connect(db);
+// Connect to MongoDB for the eventsdb database
+mongoose.connect(eventsDbURI);
 
-// Get the default connection
-const connection = mongoose.connection;
+// Get the default connection for the eventsdb database
+const eventsConnection = mongoose.connection;
 
-// Event listener for successful connection
-connection.on("connected", () => {
-    console.log("Connected to MongoDB");
+// Event listener for successful connection to the eventsdb database
+eventsConnection.on("connected", () => {
+    console.log("Connected to eventsdb MongoDB");
 });
 
-// Event listener for connection error
-connection.on("error", (err) => {
-    console.log("Error connecting to MongoDB:", err);
+// Event listener for connection error to the eventsdb database
+eventsConnection.on("error", (err) => {
+    console.log("Error connecting to eventsdb MongoDB:", err);
 });
+
 
 // defining a get request
 router.get('/',(req,res)=>{
     res.send('From API route')
 })
+
+
+// Set up nodemailer transporter
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'jadaunsanidhya@gmail.com',
+        pass: 'ldmo askw penb tulu'
+    }
+});
+
+// Schedule a cron job to run at 8 PM every day
+cron.schedule('55 15 * * *', async () => {
+    try {
+        // Query the database to find stores with cash amounts greater than 5000
+        const stores = await CashSettlement.find({ cashAmount: { $gt: 5000 } });
+
+        // If any stores are found, send an email to the company
+        if (stores.length > 0) {
+            let mailOptions = {
+                from: 'jadaunsanidhya@gmail.com',
+                to: 'shashank.egreen@gmail.com',
+                subject: 'Stores with Cash Amount greater than 5000',
+                text: `The following stores have cash amounts greater than 5000: ${stores.map(store => store.storeName).join(', ')}`
+            };
+
+            // Send the email
+            await transporter.sendMail(mailOptions);
+            console.log('Email sent successfully');
+        } else {
+            console.log('No stores found with cash amount greater than 5000');
+        }
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+});
+
 
 // POST request handler for user registration
 router.post('/register', async (req, res) => {
@@ -45,6 +83,32 @@ router.post('/register', async (req, res) => {
         res.status(500).send("Error registering user");
     }
 });
+
+
+// POST request handler for cash settlement
+router.post('/cashSettlement', async (req, res) => {
+    try {
+        // Extract required fields from the request body
+        const { storeName, cashAmount } = req.body;
+
+        // Create a new instance of the CashSettlement model
+        const cashSettlement = new CashSettlement({
+            storeName: storeName,
+            cashAmount: cashAmount
+        });
+
+        // Save the cash settlement data to the database
+        const savedCashSettlement = await cashSettlement.save();
+
+        // Send a success response with the saved data
+        res.status(200).send(savedCashSettlement);
+    } catch (error) {
+        console.log(error);
+        // Send an error response if there's any issue saving the data
+        res.status(500).send("Error saving cash settlement data");
+    }
+});
+
 
 // POST request handler for login
 router.post('/login', async (req, res) => {
@@ -63,7 +127,6 @@ router.post('/login', async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
-
 
 router.get('/events',(req,res)=>{
     let events = [
@@ -93,9 +156,7 @@ router.get('/events',(req,res)=>{
         }
     ]
     res.json(events)
-})
-
-
+});
 
 router.get('/special',(req,res)=>{
     let events = [
@@ -125,7 +186,7 @@ router.get('/special',(req,res)=>{
         }
     ]
     res.json(events)
-})
+});
 
 // exporting the api routes
-module.exports = router
+module.exports = router;

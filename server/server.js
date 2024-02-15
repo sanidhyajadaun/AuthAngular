@@ -1,7 +1,7 @@
 // Using the packages in our file
 const express = require('express')
 const bodyParser = require('body-parser')
-
+const cors = require('cors'); // Import cors package
 // defining the constant port of our server
 const PORT = 3000
 
@@ -10,6 +10,9 @@ const api = require('./routes/api')
 
 // Creating instance of express
 const app = express()
+
+// Enable CORS
+app.use(cors());
 
 // specifying the body parser to handle json data
 app.use(bodyParser.json())
