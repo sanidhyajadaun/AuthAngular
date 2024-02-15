@@ -10,6 +10,7 @@ import { EventsComponent } from './events/events.component';
 import { SpecialEventsComponent } from './special-events/special-events.component';
 import { AuthService } from './auth.service';
 import { CashSettlementComponent } from './cash-settlement/cash-settlement.component';
+import { EventService } from './event.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +26,7 @@ import { CashSettlementComponent } from './cash-settlement/cash-settlement.compo
     HttpClientModule,
     AppRoutingModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService,EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
