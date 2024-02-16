@@ -90,6 +90,12 @@ cron.schedule('55 15 * * *', async () => {
 // POST request handler for user registration
 router.post('/register', async (req, res) => {
     try {
+        // Check if a user with the provided email already exists
+        const existingUser = await User.findOne({ email: req.body.email });
+        if (existingUser) {
+            return res.status(400).send('Email already in use');
+        }
+
         let userData = req.body;
         let user = new User(userData);
         let registeredUser = await user.save();
