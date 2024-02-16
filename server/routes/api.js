@@ -1,6 +1,7 @@
 // As a good practice we'll make a separate file for handling routing of api
 
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const User = require('../models/user');
 const CashSettlement = require('../models/cash-settlement');
@@ -77,7 +78,9 @@ router.post('/register', async (req, res) => {
         let userData = req.body;
         let user = new User(userData);
         let registeredUser = await user.save();
-        res.status(200).send(registeredUser);
+        let payload = { subject: registeredUser._id };
+        let token = jwt.sign(payload,'secretKey')
+        res.status(200).send({token});
     } catch (error) {
         console.log(error);
         res.status(500).send("Error registering user");
@@ -120,7 +123,9 @@ router.post('/login', async (req, res) => {
         } else if (user.password !== userData.password) {
             res.status(401).send('Invalid Password');
         } else {
-            res.status(200).send(user);
+            let payload = {subject : user._id}
+            let token = jwt.sign(payload,'secretKey')
+            res.status(200).send({token});
         }
     } catch (error) {
         console.log(error);
