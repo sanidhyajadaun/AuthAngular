@@ -7,7 +7,7 @@ import { EventService } from '../event.service';
 })
 export class EventsComponent {
 
-  events = [];
+  events: any[] = [];
   constructor(private _eventService: EventService){}
 
   ngOnInit(){

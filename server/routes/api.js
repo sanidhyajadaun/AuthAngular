@@ -132,27 +132,39 @@ router.get('/events',(req,res)=>{
     let events = [
         {
             "id": "1",
-            "name": "Auto expo",
+            "name": "Auto expo1",
             "desciption": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date": "2012-04-24T18:25:43.511Z"
         },
         {
             "id": "2",
             "name": "Auto expo2",
             "desciption": "lorem ipsum2",
-            "date": "2012-04-23T18:25:43.511Z2"
+            "date": "2012-06-24T18:25:43.511Z"
         },
         {
             "id": "3",
             "name": "Auto expo3",
             "desciption": "lorem ipsum3",
-            "date": "2012-04-23T18:25:43.511Z3"
+            "date": "2012-08-24T18:25:43.511Z"
         },
         {
             "id": "4",
             "name": "Auto expo4",
             "desciption": "lorem ipsum4",
-            "date": "2012-04-23T18:25:43.511Z4"
+            "date": "2012-10-24T18:25:43.511Z"
+        },
+        {
+            "id": "5",
+            "name": "Auto expo5",
+            "desciption": "lorem ipsum5",
+            "date": "2012-18-23T20:25:43.511Z"
+        },
+        {
+            "id": "6",
+            "name": "Auto expo6",
+            "desciption": "lorem ipsum6",
+            "date": "2012-20-23T20:25:43.511Z"
         }
     ]
     res.json(events)
@@ -162,27 +174,39 @@ router.get('/special',(req,res)=>{
     let events = [
         {
             "id": "1",
-            "name": "Auto expo",
+            "name": "Auto expo1",
             "desciption": "lorem ipsum",
-            "date": "2012-04-23T18:25:43.511Z"
+            "date": "2012-10-24T18:25:43.511Z"
         },
         {
             "id": "2",
             "name": "Auto expo2",
             "desciption": "lorem ipsum2",
-            "date": "2012-04-23T18:25:43.511Z2"
+            "date": "2012-12-24T18:25:43.511Z"
         },
         {
             "id": "3",
             "name": "Auto expo3",
             "desciption": "lorem ipsum3",
-            "date": "2012-04-23T18:25:43.511Z3"
+            "date": "2012-14-24T18:25:43.511Z"
         },
         {
             "id": "4",
             "name": "Auto expo4",
             "desciption": "lorem ipsum4",
-            "date": "2012-04-23T18:25:43.511Z4"
+            "date": "2012-16-23T20:25:43.511Z"
+        },
+        {
+            "id": "5",
+            "name": "Auto expo5",
+            "desciption": "lorem ipsum5",
+            "date": "2012-18-23T20:25:43.511Z"
+        },
+        {
+            "id": "6",
+            "name": "Auto expo6",
+            "desciption": "lorem ipsum6",
+            "date": "2012-20-23T20:25:43.511Z"
         }
     ]
     res.json(events)

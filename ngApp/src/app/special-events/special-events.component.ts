@@ -6,7 +6,7 @@ import { EventService } from '../event.service';
   styleUrls: ['./special-events.component.css']
 })
 export class SpecialEventsComponent {
-  specialEvents = [];
+  specialEvents: any[] = [];
 
   constructor(private _eventService:EventService){}
 
