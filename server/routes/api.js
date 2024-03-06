@@ -12,8 +12,8 @@ const axios = require('axios');
 
 
 // MongoDB connection strings
-const eventsDbURI = "mongodb+srv://sanidhyajadaun:Sancloud7890@cluster0.nacb8ym.mongodb.net/eventsdb?retryWrites=true&w=majority";
-// const storeDbURI = "mongodb+srv://sanidhyajadaun:Sancloud7890@cluster0.nacb8ym.mongodb.net/StoreDetails?retryWrites=true&w=majority";
+const eventsDbURI = "MongoURL";
+// const storeDbURI = "MongoURL";
 
 // Connect to MongoDB for the eventsdb database
 mongoose.connect(eventsDbURI);
@@ -57,8 +57,8 @@ function verifyToken(req,res,next){
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'jadaunsanidhya@gmail.com',
-        pass: 'ldmo askw penb tulu'
+        user: 'your@mail',
+        pass: 'app generated pass 16character'
     }
 });
 
@@ -82,8 +82,8 @@ cron.schedule('0 20 * * *', async () => {
         // If any stores are found, send an email to the company
         if (stores.length > 0) {
             let mailOptions = {
-                from: 'jadaunsanidhya@gmail.com',
-                to: 'shashank.egreen@gmail.com',
+                from: 'your@mail.com',
+                to: 'destination@gmail.com',
                 subject: 'Stores with Cash Amount greater than 5000',
                 text: `The following stores have cash amounts greater than 5000: ${stores.map(store => store.storeName).join(', ')}`
             };
