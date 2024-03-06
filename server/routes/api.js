@@ -8,6 +8,8 @@ const CashSettlement = require('../models/cash-settlement');
 const mongoose = require('mongoose');
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
+const axios = require('axios');
+
 
 // MongoDB connection strings
 const eventsDbURI = "mongodb+srv://sanidhyajadaun:Sancloud7890@cluster0.nacb8ym.mongodb.net/eventsdb?retryWrites=true&w=majority";
@@ -60,8 +62,19 @@ let transporter = nodemailer.createTransport({
     }
 });
 
+// Schedule a cron job to run at 5 PM every day for automatic logout
+cron.schedule('0 17 * * *', async () => {
+    try {
+        // Send a POST request to initiate the automatic logout process
+        await axios.post('http://localhost:3000/api/logout');
+        console.log('Automatic logout successful');
+    } catch (error) {
+        console.error('Error during automatic logout:', error);
+    }
+});
+
 // Schedule a cron job to run at 8 PM every day
-cron.schedule('55 15 * * *', async () => {
+cron.schedule('0 20 * * *', async () => {
     try {
         // Query the database to find stores with cash amounts greater than 5000
         const stores = await CashSettlement.find({ cashAmount: { $gt: 5000 } });
@@ -85,7 +98,6 @@ cron.schedule('55 15 * * *', async () => {
         console.error('Error sending email:', error);
     }
 });
-
 
 // POST request handler for user registration
 router.post('/register', async (req, res) => {
@@ -131,6 +143,14 @@ router.post('/cashSettlement', async (req, res) => {
         // Send an error response if there's any issue saving the data
         res.status(500).send("Error saving cash settlement data");
     }
+});
+
+
+// POST request handler for manual logout
+router.post('/logout', (req, res) => {
+    console.log('Manual logout requested');
+    // Clear token and respond with success
+    res.status(200).send({ message: 'Logout successful' });
 });
 
 

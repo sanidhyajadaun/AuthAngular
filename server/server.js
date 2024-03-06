@@ -2,6 +2,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors'); // Import cors package
+
 // defining the constant port of our server
 const PORT = 3000
 
@@ -29,4 +30,6 @@ app.get('/',function(req,res){
 app.listen(PORT,function(){
     console.log('Server is running on localhost:'+PORT)
 })
+
+
 
